@@ -6,7 +6,8 @@ namespace CodingChallange
 {
     class CalculateSweetnSalts
     {
-      
+
+        // based on https://www.c-sharpcorner.com/blogs/fizzbuzz-in-c-sharp
         public void Calculate()
         {
             // loops through number from 1 till 100
