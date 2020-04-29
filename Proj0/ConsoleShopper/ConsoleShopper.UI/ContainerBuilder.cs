@@ -74,7 +74,7 @@ namespace ConsoleShopper.UI
             {
                 configure.ClearProviders();
                 configure.AddConfiguration(configuration.GetSection("Logging")).AddConsole();
-                //configure.SetMinimumLevel(LogLevel.Trace);
+                configure.SetMinimumLevel(LogLevel.Trace);
             });
 
 

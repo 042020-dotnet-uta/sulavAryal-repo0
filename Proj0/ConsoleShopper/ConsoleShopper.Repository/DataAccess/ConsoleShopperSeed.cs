@@ -5,8 +5,14 @@ using System.Text;
 
 namespace ConsoleShopper.Repository.DataAccess
 {
+
     static class ConsoleShopperSeed
     {
+        /// <summary>
+        /// Seed data for initial setup 
+        /// Eventually gotta get deleted. 
+        /// </summary>
+        /// <returns></returns>
         internal static List<Customer> DataSource()
         {
 

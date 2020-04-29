@@ -16,12 +16,19 @@ namespace ConsoleShopper.Repository.DataAccess
         }
         public DbSet<Customer> Customers { get; set; }
 
+        /// <summary>
+        /// Only needed for the migration to work, as the app takes its database connection from appsettings.json
+        /// </summary>
+        /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true", b => b.MigrationsAssembly("ConsoleShopper.Repository"));
         }
     }
 
+    /// <summary>
+    /// Only needed for the migration to work, as the app takes its database connection from appsettings.json
+    /// </summary>
     public class ConsoleShopperDbContextFactory : IDesignTimeDbContextFactory<ConsoleShopperDbContext>
     {
         public ConsoleShopperDbContext CreateDbContext(string[] args)
