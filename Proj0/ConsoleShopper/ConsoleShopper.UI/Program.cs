@@ -210,12 +210,26 @@ namespace ConsoleShopper
         private async Task DeleteCustomerAsync()
         {
             Console.WriteLine("************************* Welcome to the customer delete menu ******************************\n");
+
+            // Check if the current user is admin or not 
+            Program p = new Program();
+            Console.Write("Enter your username: ");
+            var username = Console.ReadLine();
+            Console.Write("Enter your password: ");
+            var password = Console.ReadLine();
+
+           
+            if (! await p.IsValidCustomer(username, password)) 
+            {
+                Console.WriteLine("Sorry you don't have the authority to do this.");
+                return;
+            }
             // Asks for the Customer's Id whom should be deleted. 
-            Console.WriteLine("Enter Id of the Customer you want delete.");
+            Console.Write("Enter Id of the Customer you want delete: ");
 
             var customerId = Console.ReadLine();
 
-            Program p = new Program();
+          
 
             // Note : customerId of type string gets converted to int inside GetCustomerByIdAsync method 
             var customerToDelete = await p.GetCustomerByIdAsync(customerId);
@@ -235,6 +249,13 @@ namespace ConsoleShopper
             {
                 Console.WriteLine("Customer not found");
             }
+        }
+
+        private async Task<bool> IsValidCustomer(string username, string password) 
+        {
+            var validCustomer = Container.GetService<ICustomerService>();
+            var validity = await validCustomer.IsCustomer(username, password);
+            return validity;
         }
     }
 

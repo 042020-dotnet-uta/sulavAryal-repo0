@@ -31,7 +31,7 @@ namespace ConsoleShopper.Repository.DataAccess
                 );
             // Seed Customer data
             modelBuilder.Entity<Customer>().HasData(
-                new Customer { Id = 1, FirstName = "Rosalinda", LastName = "Hope", Password = "password", UserTypeId = 1 },
+                new Customer { Id = 1, FirstName = "Sulav", LastName = "Aryal", Password = "password", UserTypeId = 1 },
                 new Customer { Id = 2, FirstName = "Danyelle", LastName = "Tsosie", Password = "password", UserTypeId = 2 },
                 new Customer { Id = 3, FirstName = "Brigitte", LastName = "Laufer", Password = "password", UserTypeId = 2 },
                 new Customer { Id = 4, FirstName = "Bettie", LastName = "Turek", Password = "password", UserTypeId = 2 },

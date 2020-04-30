@@ -49,9 +49,9 @@ namespace ConsoleShopper.Service
             await _customerRepository.InsertCustomerAsync(customerToInsert);
         }
 
-        public bool IsCustomer(string firstName, string lastName,int userTypeId)
+        public async Task<bool> IsCustomer(string username, string password)
         {
-            throw new NotImplementedException();
+            return await _customerRepository.IsCustomer(username, password);   
         }
 
         public async Task UpdateCustomerAsync(Customer customerToUpdate)

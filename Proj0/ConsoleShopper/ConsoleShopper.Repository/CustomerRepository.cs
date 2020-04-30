@@ -96,9 +96,9 @@ namespace ConsoleShopper.Repository
         #endregion
 
 
-        public bool IsCustomer(string firstName, string lastName, int userTypeId)
+        public async Task<bool> IsCustomer(string username, string password)
         {
-            var customer = _dbContext.Customers.Where(x => x.FirstName == firstName && x.LastName == lastName && x.UserTypeId == userTypeId ).ToList();
+            var customer = await _dbContext.Customers.Where(x => x.FirstName == username && x.Password == password && x.UserTypeId == 1 ).FirstOrDefaultAsync();
 
             if (customer != null)
             {
