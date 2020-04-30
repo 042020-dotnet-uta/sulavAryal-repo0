@@ -13,7 +13,7 @@ namespace ConsoleShopper.UI
     public class CustomerCRUD
     {
         // Bringing in DI container built from ContainerBuilder.cs. 
-        public static readonly IServiceProvider Container = ContainerBuilder.Build();
+        static readonly IServiceProvider Container = ContainerBuilder.Build();
         /// <summary>
         /// Gets Customer by Id asynchronously 
         /// </summary>
@@ -41,7 +41,7 @@ namespace ConsoleShopper.UI
             // if not asks for user's input
             else
             {
-                Console.Write("Enter the Id of customer: ");
+                Console.Write("\nEnter the Id of customer: ");
                 var customerIdString = Console.ReadLine();
 
                 // static helper function Converts.ToInt
@@ -83,7 +83,7 @@ namespace ConsoleShopper.UI
         public async Task CreateACustomerAsync()
         {
             Console.WriteLine("************************* Welcome to the customer create menu ******************************\n");
-            Console.Write("Enter your first name: ");
+            Console.Write("\nEnter your first name: ");
             var firstName = Console.ReadLine();
             Console.Write("Enter your last name: ");
             var lastName = Console.ReadLine();
@@ -109,7 +109,7 @@ namespace ConsoleShopper.UI
             // Customer updatedCustomer, string updatedFirstName, string updatedLastName
 
             Console.WriteLine("************************* Welcome to the  customer update menu ******************************\n");
-            Console.Write("Enter Id of the Customer you want update: ");
+            Console.Write("\nEnter Id of the Customer you want update: ");
             var customerId = Console.ReadLine();
             Program p = new Program();
 
@@ -144,13 +144,13 @@ namespace ConsoleShopper.UI
 
             // Check if the current user is admin or not 
             Program p = new Program();
-            Console.Write("Enter your username: ");
+            Console.Write("\nEnter your username: ");
             var username = Console.ReadLine();
             Console.Write("Enter your password: ");
             var password = Console.ReadLine();
 
 
-            if (!await IsValidCustomer(username, password))
+            if (!await IsAdmin(username, password))
             {
                 Console.WriteLine("Sorry you don't have the authority to do this.");
                 return;
@@ -159,8 +159,6 @@ namespace ConsoleShopper.UI
             Console.Write("Enter Id of the Customer you want delete: ");
 
             var customerId = Console.ReadLine();
-
-
 
             // Note : customerId of type string gets converted to int inside GetCustomerByIdAsync method 
             var customerToDelete = await GetCustomerByIdAsync(customerId);
@@ -182,10 +180,16 @@ namespace ConsoleShopper.UI
             }
         }
 
-        public async Task<bool> IsValidCustomer(string username, string password)
+        /// <summary>
+        /// Tests for users authorization level 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<bool> IsAdmin(string username, string password)
         {
             var validCustomer = Container.GetService<ICustomerService>();
-            var validity = await validCustomer.IsCustomer(username, password);
+            var validity = await validCustomer.IsAdmin(username, password);
             return validity;
         }
     }

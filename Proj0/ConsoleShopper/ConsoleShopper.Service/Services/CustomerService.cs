@@ -49,9 +49,9 @@ namespace ConsoleShopper.Service
             await _customerRepository.InsertCustomerAsync(customerToInsert);
         }
 
-        public async Task<bool> IsCustomer(string username, string password)
+        public async Task<bool> IsAdmin(string username, string password)
         {
-            return await _customerRepository.IsCustomer(username, password);   
+            return await _customerRepository.IsAdmin(username, password);   
         }
 
         public async Task UpdateCustomerAsync(Customer customerToUpdate)

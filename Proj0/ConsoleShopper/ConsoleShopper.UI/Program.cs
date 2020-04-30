@@ -6,16 +6,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConsoleShopper
 {
+
+    
     class Program
     {
-
-
-        // Bringing in DI container built from ContainerBuilder.cs. 
-        // public static readonly IServiceProvider Container = ContainerBuilder.Build();
 
         public static async Task Main(string[] args)
         {
@@ -32,13 +31,15 @@ namespace ConsoleShopper
        \/       \/       \/     \/       |__|          \/               
 ";
             Console.WriteLine(title);
-            // Create an instance of the Program object
+            
 
             CustomerCRUD customerCRUD = new CustomerCRUD();
+           
+
             while (true)
             {
-
-                Console.Write("Press 1 to get to the main menu, Press any other key to exit: ");
+               
+                Console.Write("\nPress 1 to get to the main menu, Press any other key to exit: ");
                 var input = Console.ReadLine();
                 if (input != "1")
                 {
@@ -50,10 +51,11 @@ namespace ConsoleShopper
                 }
                 else
                 {
-                    Console.WriteLine("********************Welcome to the main menu************************");
+                    Console.WriteLine("\n********************Welcome to the main menu************************");
 
-                    Console.WriteLine("Press 1 for Customer by Id, Press 2 to insert a Customer, Press 3 to Update the customer, Press 4 to Delete the customer");
-                    Console.Write("Enter your Choice: ");
+                    Console.WriteLine("\nPress 1 for Customer by Id,\nPress 2 to insert a Customer, \nPress 3 to Update the customer, \nPress 4 to Delete the customer");
+                    Console.Write("\nEnter your Choice: ");
+
                     input = Console.ReadLine();
 
                     if (input == "1")
