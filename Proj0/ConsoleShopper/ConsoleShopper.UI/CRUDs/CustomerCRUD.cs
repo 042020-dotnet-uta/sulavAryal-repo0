@@ -14,6 +14,8 @@ namespace ConsoleShopper.UI
     {
         // Bringing in DI container built from ContainerBuilder.cs. 
         static readonly IServiceProvider Container = ContainerBuilder.Build();
+        // flag to allow or disallow GetCustomerByIdAsync to display message. 
+        bool flag = true;
         /// <summary>
         /// Gets Customer by Id asynchronously 
         /// </summary>
@@ -73,9 +75,17 @@ namespace ConsoleShopper.UI
             // if the customer with provided Id does not exit
             else
             {
-                // Prints Customer not found message to the console 
-                Console.WriteLine("Customer not found");
-                // and returns null 
+                if (flag)
+                {
+                    // Prints Customer not found message to the console 
+                    //Console.WriteLine("Customer not found");
+                    // and returns null 
+                    Console.WriteLine("Customer not found");
+                    flag = false;
+                    return null;
+                }
+               
+                
                 return null;
             }
         }
@@ -83,16 +93,21 @@ namespace ConsoleShopper.UI
         public async Task CreateACustomerAsync()
         {
             Console.WriteLine("************************* Welcome to the customer create menu ******************************\n");
+            Console.WriteLine("Your first name will be used as the username.");
             Console.Write("\nEnter your first name: ");
             var firstName = Console.ReadLine();
             Console.Write("Enter your last name: ");
             var lastName = Console.ReadLine();
+            Console.Write("Enter your preferred password: ");
+            var password = Console.ReadLine();
 
-            if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
+
+            if (!string.IsNullOrEmpty(firstName) &&
+                !string.IsNullOrEmpty(lastName) && !string.IsNullOrEmpty(password))
             {
                 Console.WriteLine($"Welcome {firstName} {lastName}");
                 // Create a customer from user inserted strings
-                var customer = new Customer { FirstName = firstName, LastName = lastName };
+                var customer = new Customer { FirstName = firstName, LastName = lastName, Password = password };
 
                 // conjure up an interface to service layer 
                 var insertCustomer = Container.GetService<ICustomerService>();
@@ -149,7 +164,6 @@ namespace ConsoleShopper.UI
             Console.Write("Enter your password: ");
             var password = Console.ReadLine();
 
-
             if (!await IsAdmin(username, password))
             {
                 Console.WriteLine("Sorry you don't have the authority to do this.");
@@ -160,8 +174,11 @@ namespace ConsoleShopper.UI
 
             var customerId = Console.ReadLine();
 
+            // flag to disallow GetCustomerByIdAsync method to display message. 
+            flag = false;
             // Note : customerId of type string gets converted to int inside GetCustomerByIdAsync method 
             var customerToDelete = await GetCustomerByIdAsync(customerId);
+        
 
             var customerService = Container.GetService<ICustomerService>();
             if (customerToDelete != null)

@@ -53,7 +53,7 @@ namespace ConsoleShopper
                 {
                     Console.WriteLine("\n********************Welcome to the main menu************************");
 
-                    Console.WriteLine("\nPress 1 for Customer by Id,\nPress 2 to insert a Customer, \nPress 3 to Update the customer, \nPress 4 to Delete the customer");
+                    Console.WriteLine("\nPress 1 to search Customer by Id,\nPress 2 to register as a Customer, \nPress 3 to Update the customer, \nPress 4 to Delete the customer");
                     Console.Write("\nEnter your Choice: ");
 
                     input = Console.ReadLine();

@@ -1,3 +1,5 @@
 ﻿-get to the :  Directory: C:\Proj0\ConsoleShopper\ConsoleShopper.Repository\DataAccess
 - Add-Migration -o "DataAccess\CSMigration" <give-Migration-A-Name> ; to add migration 
+- dotnet ef migrations add InitialMigration -o "DataAccess\CSMigration"
+-
 - Update-Database to make it update db. 
