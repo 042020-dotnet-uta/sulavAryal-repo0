@@ -49,7 +49,7 @@ namespace ConsoleShopper.Service
             await _customerRepository.InsertCustomerAsync(customerToInsert);
         }
 
-        public bool IsCustomer(string firstName, string lastName)
+        public bool IsCustomer(string firstName, string lastName,int userTypeId)
         {
             throw new NotImplementedException();
         }
