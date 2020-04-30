@@ -15,6 +15,21 @@ namespace ConsoleShopper.Repository.DataAccess
 
         }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<UserType> UserTypes { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<StoreLocation> StoreLocations { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+
+        #region Seeding User Types
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserType>().HasData(
+                new UserType { ID = 1, Type = "Admin" },
+                new UserType { ID = 2, Type = "Customer"}
+                );
+        }
+        #endregion
 
         /// <summary>
         /// Only needed for the migration to work, as the app takes its database connection from appsettings.json

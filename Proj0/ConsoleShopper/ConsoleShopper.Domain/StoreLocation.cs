@@ -4,7 +4,9 @@ using System.Text;
 
 namespace ConsoleShopper.Domain
 {
-    public class Store
+    public class StoreLocation
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
