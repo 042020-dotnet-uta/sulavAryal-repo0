@@ -33,8 +33,18 @@ namespace ConsoleShopper.Repository
 
         public async Task<Customer> GetCustomerByIdAsync(int id)
         {
+            try
+            {
+                return await _dbContext.Customers.Where(x => x.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+                return null;
+            }
             //return _dataSource.Where(x => x.Id == id).FirstOrDefault();
-            return await _dbContext.Customers.Where(x => x.Id == id).FirstOrDefaultAsync();
+
         }
         #endregion
 
@@ -42,30 +52,53 @@ namespace ConsoleShopper.Repository
 
         public async Task InsertCustomerAsync(Customer customerToInsert)
         {
-            _dbContext.Customers.Add(customerToInsert);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                _dbContext.Customers.Add(customerToInsert);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
         }
 
         public async Task UpdateCustomerAsync(Customer customerToUpdate)
         {
-            
-             _dbContext.Customers.Update(customerToUpdate);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                _dbContext.Customers.Update(customerToUpdate);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+
         }
 
         public async Task DeleteCustomerAsync(Customer customerToDelete)
         {
-            _dbContext.Customers.Remove(customerToDelete);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                _dbContext.Customers.Remove(customerToDelete);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
         }
 
         #endregion
 
 
-        public bool IsCustomer(string firstName, string lastName)
+        public bool IsCustomer(string firstName, string lastName, int userTypeId)
         {
-            // var customer = _dataSource.Where(x => x.FirstName == firstName && x.LastName == lastName).ToList();
-            var customer = _dbContext.Customers.Where(x => x.FirstName == firstName && x.LastName == lastName).ToList();
+            var customer = _dbContext.Customers.Where(x => x.FirstName == firstName && x.LastName == lastName && x.UserTypeId == userTypeId ).ToList();
 
             if (customer != null)
             {

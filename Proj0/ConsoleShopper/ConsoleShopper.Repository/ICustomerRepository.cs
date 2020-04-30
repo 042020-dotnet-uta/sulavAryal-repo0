@@ -11,6 +11,6 @@ namespace ConsoleShopper.Repository
         Task InsertCustomerAsync(Customer customerToInsert);
         Task UpdateCustomerAsync(Customer customerToUpdate);
         Task DeleteCustomerAsync(Customer customerToDelete);
-        bool IsCustomer(string firstName, string lastName);
+        bool IsCustomer(string firstName, string lastName, int userTypeId);
     }
 }
