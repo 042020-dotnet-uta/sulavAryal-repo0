@@ -65,7 +65,7 @@ namespace ConsoleShopper.Repository.DataAccess
             // Server=.;Database=consoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true
             // DefaultConnection string for passworded sa connection
             // Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true
-            optionsBuilder.UseSqlServer("Server=.;Database=consoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true", b => b.MigrationsAssembly("ConsoleShopper.Repository"));
+            optionsBuilder.UseSqlServer("Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true", b => b.MigrationsAssembly("ConsoleShopper.Repository"));
         }
     }
 
@@ -82,7 +82,7 @@ namespace ConsoleShopper.Repository.DataAccess
             // Server=.;Database=consoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true
             // DefaultConnection string for passworded sa connection
             // Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true
-            optionsBuilder.UseSqlServer("Server=.;Database=consoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true");
 
             return new ConsoleShopperDbContext(optionsBuilder.Options);
         }

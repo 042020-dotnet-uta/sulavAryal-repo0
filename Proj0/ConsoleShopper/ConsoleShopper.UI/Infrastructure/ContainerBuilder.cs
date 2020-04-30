@@ -49,7 +49,7 @@ namespace ConsoleShopper.UI
             services.AddDbContext<ConsoleShopperDbContext>(options => options
                 // Use DefaultConnection for passworded sa connection 
                 // Use AlternativeConnection for windows authenticated connection
-                .UseSqlServer(configuration.GetConnectionString("AlternateConnection")));
+                .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             // Adding Repository Layer dependencies into DI Container
             services.AddRepositoryLayerServices();
