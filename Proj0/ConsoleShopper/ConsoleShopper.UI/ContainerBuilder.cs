@@ -47,7 +47,9 @@ namespace ConsoleShopper.UI
 
             // Adding DbContext into DI Container.
             services.AddDbContext<ConsoleShopperDbContext>(options => options
-                .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                // Use DefaultConnection for passworded sa connection 
+                // Use AlternativeConnection for windows authenticated connection
+                .UseSqlServer(configuration.GetConnectionString("AlternateConnection")));
 
             // Adding Repository Layer dependencies into DI Container
             services.AddRepositoryLayerServices();

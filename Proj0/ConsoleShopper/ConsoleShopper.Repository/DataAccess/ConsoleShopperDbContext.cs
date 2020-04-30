@@ -61,7 +61,11 @@ namespace ConsoleShopper.Repository.DataAccess
         /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true", b => b.MigrationsAssembly("ConsoleShopper.Repository"));
+            // Alternate connection string for windows authenticated connection 
+            // Server=.;Database=consoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true
+            // DefaultConnection string for passworded sa connection
+            // Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true
+            optionsBuilder.UseSqlServer("Server=.;Database=consoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true", b => b.MigrationsAssembly("ConsoleShopper.Repository"));
         }
     }
 
@@ -73,7 +77,12 @@ namespace ConsoleShopper.Repository.DataAccess
         public ConsoleShopperDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ConsoleShopperDbContext>();
-            optionsBuilder.UseSqlServer("Server =.; Database = ConsoleShopperDb; User Id = sa; Password = abc123; MultipleActiveResultSets = true");
+
+            // Alternate connection string for windows authenticated connection 
+            // Server=.;Database=consoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true
+            // DefaultConnection string for passworded sa connection
+            // Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true
+            optionsBuilder.UseSqlServer("Server=.;Database=consoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true");
 
             return new ConsoleShopperDbContext(optionsBuilder.Options);
         }
