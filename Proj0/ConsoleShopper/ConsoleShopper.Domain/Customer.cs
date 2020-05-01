@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ConsoleShopper.Domain
 {
@@ -14,31 +10,14 @@ namespace ConsoleShopper.Domain
         [StringLength(255)]
         public string LastName { get; set; }
 
+        public string Email { get; set; }
+        public string PhoneNo { get; set; }
 
-        private string password;
         [StringLength(16)]
         public string Password { get; set; }
 
-        #region Commented password Encode/Decode Routine to be implemented later
-        //public string Password
-        //{
-        //    get {
-
-
-        //        return password;
-        //    }
-        //    set {
-
-        //        // Highly inscecure. don't do this in production or at home.
-        //        // Stay safe, stay secure, remember to salt your hashes just like your food. 
-        //        // and use strong encryption.
-        //        // Used here only for Demo purposes. 
-        //        //string hash = "";
-        //        password = value;
-        //    }
-        //}
-        #endregion  
-
+        [StringLength(255)]
+        public string Address { get; set; }
         public int UserTypeId { get; set; }
         public virtual UserType UserType { get; set; }
 

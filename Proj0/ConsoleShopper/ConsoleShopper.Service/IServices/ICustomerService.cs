@@ -7,6 +7,7 @@ namespace ConsoleShopper.Service
     public interface ICustomerService
     {
         Task<IEnumerable<Customer>> GetAllCustomersAsync();
+        Task<IEnumerable<Customer>> GetAllCustomersBySearchStringAsync(string searchString);
         Task<Customer> GetCustomerIdAsync(int id);
         Task InsertCustomerAsync(Customer customerToInsert);
         Task UpdateCustomerAsync(Customer customerToUpdate);

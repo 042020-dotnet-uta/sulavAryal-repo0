@@ -7,6 +7,7 @@ namespace ConsoleShopper.Repository
     public interface ICustomerRepository
     {
         Task<IEnumerable<Customer>> GetAllCustomersAsync();
+        Task<IEnumerable<Customer>> GetCustomerBySearchStringAsync(string searchString);
         Task<Customer> GetCustomerByIdAsync(int id);
         Task InsertCustomerAsync(Customer customerToInsert);
         Task UpdateCustomerAsync(Customer customerToUpdate);

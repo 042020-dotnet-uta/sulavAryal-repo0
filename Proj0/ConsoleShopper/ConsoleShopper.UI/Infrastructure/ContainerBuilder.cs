@@ -49,7 +49,8 @@ namespace ConsoleShopper.UI
             services.AddDbContext<ConsoleShopperDbContext>(options => options
                 // Use DefaultConnection for passworded sa connection 
                 // Use AlternativeConnection for windows authenticated connection
-                .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                .UseSqlServer(configuration.GetConnectionString("AlternateConnection"),
+                        options => options.MigrationsAssembly("ConsoleShopper.Repository")));
 
             // Adding Repository Layer dependencies into DI Container
             services.AddRepositoryLayerServices();
@@ -78,8 +79,6 @@ namespace ConsoleShopper.UI
                 configure.AddConfiguration(configuration.GetSection("Logging")).AddConsole();
                 configure.SetMinimumLevel(LogLevel.Trace);
             });
-
-
             return services.BuildServiceProvider();
         }
 

@@ -27,8 +27,7 @@ namespace ConsoleShopper.Repository
         #region Get Customer Data (DQL)
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
-            var result = _dbContext.Customers.Select(x => x).AsNoTracking();
-            return await result.ToListAsync();
+            return await _dbContext.Customers.Select(x => x).AsNoTracking().ToListAsync();
         }
 
         public async Task<Customer> GetCustomerByIdAsync(int id)
@@ -43,7 +42,28 @@ namespace ConsoleShopper.Repository
                 Console.WriteLine(e.Message);
                 return null;
             }
-            //return _dataSource.Where(x => x.Id == id).FirstOrDefault();
+
+        }
+
+        public async Task<IEnumerable<Customer>> GetCustomerBySearchStringAsync(string searchString)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(searchString)) 
+                {
+                    var result =  await _dbContext.Customers.Where(c => c.LastName.ToLower().Contains(searchString.ToLower()) ||
+                        c.FirstName.ToUpper().Contains(searchString.ToLower()))
+                    .Select(x => x).ToListAsync();
+                    return result;
+
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
 
         }
         #endregion
@@ -54,7 +74,7 @@ namespace ConsoleShopper.Repository
         {
             try
             {
-                _dbContext.Customers.Add(customerToInsert);
+               _dbContext.Customers.Add(customerToInsert);
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception e)
@@ -75,8 +95,6 @@ namespace ConsoleShopper.Repository
             {
                 Console.WriteLine(e.Message);
             }
-
-
         }
 
         public async Task DeleteCustomerAsync(Customer customerToDelete)
@@ -98,7 +116,8 @@ namespace ConsoleShopper.Repository
 
         public async Task<bool> IsAdmin(string username, string password)
         {
-            var customer = await _dbContext.Customers.Where(x => x.FirstName == username && x.Password == password && x.UserTypeId == 1 ).FirstOrDefaultAsync();
+            var customer = await _dbContext.Customers.Where(x => x.FirstName == username &&
+            x.Password == password && x.UserTypeId == 1).FirstOrDefaultAsync();
 
             if (customer != null)
             {

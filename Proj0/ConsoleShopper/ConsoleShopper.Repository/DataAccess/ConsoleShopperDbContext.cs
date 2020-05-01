@@ -19,7 +19,6 @@ namespace ConsoleShopper.Repository.DataAccess
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<StoreLocation> StoreLocations { get; set; }
-        public DbSet<Admin> Admins { get; set; }
 
         #region Seeding User Types
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,18 +27,20 @@ namespace ConsoleShopper.Repository.DataAccess
         }
         #endregion
 
+        #region We might need this for migration.  
         /// <summary>
         /// Only needed for the migration to work, as the app takes its database connection from appsettings.json
         /// </summary>
         /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Alternate connection string for windows authenticated connection 
-            // Server=.;Database=consoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true
-            // DefaultConnection string for passworded sa connection
-            // Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true
-            optionsBuilder.UseSqlServer("Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true", b => b.MigrationsAssembly("ConsoleShopper.Repository"));
+            //Alternate connection string for windows authenticated connection
+            //Server =.; Database = consoleShopperDb; Trusted_Connection = True; MultipleActiveResultSets = true
+            //DefaultConnection string for passworded sa connection
+            //Server =.; Database = ConsoleShopperDb; User Id = sa; Password = abc123; MultipleActiveResultSets = true
+            //optionsBuilder.UseSqlServer("Server=.;Database=ConsoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true", b => b.MigrationsAssembly("ConsoleShopper.Repository"));
         }
+        #endregion
     }
 
     /// <summary>
@@ -55,7 +56,7 @@ namespace ConsoleShopper.Repository.DataAccess
             // Server=.;Database=consoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true
             // DefaultConnection string for passworded sa connection
             // Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true
-            optionsBuilder.UseSqlServer("Server=.;Database=ConsoleShopperDb;User Id=sa;Password=abc123;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=.;Database=ConsoleShopperDb;Trusted_Connection=True;MultipleActiveResultSets=true");
 
             return new ConsoleShopperDbContext(optionsBuilder.Options);
         }

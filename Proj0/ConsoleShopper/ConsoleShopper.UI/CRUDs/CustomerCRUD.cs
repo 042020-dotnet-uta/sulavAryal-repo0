@@ -1,11 +1,9 @@
 ﻿using ConsoleShopper.Domain;
 using ConsoleShopper.Service;
-using ConsoleShopper.UI;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConsoleShopper.UI
@@ -16,6 +14,8 @@ namespace ConsoleShopper.UI
         static readonly IServiceProvider Container = ContainerBuilder.Build();
         // flag to allow or disallow GetCustomerByIdAsync to display message. 
         bool flag = true;
+        bool isAdmin = false;
+
         /// <summary>
         /// Gets Customer by Id asynchronously 
         /// </summary>
@@ -75,6 +75,8 @@ namespace ConsoleShopper.UI
             // if the customer with provided Id does not exit
             else
             {
+                // calling code sets this flag false if they want to suppress
+                // the message coming in from here. 
                 if (flag)
                 {
                     // Prints Customer not found message to the console 
@@ -84,15 +86,57 @@ namespace ConsoleShopper.UI
                     flag = false;
                     return null;
                 }
-               
-                
                 return null;
             }
         }
 
+        public async Task<IEnumerable<Customer>> GetCustomerBySearchStringAsync(string searchString = "")
+        {
+            Console.Write("\nEnter Customer's First Name or Last Name: ");
+            var searchTerm = Console.ReadLine();
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var customerService = Container.GetService<ICustomerService>();
+                var customers = await customerService.GetAllCustomersBySearchStringAsync(searchTerm);
+                Console.Write("******************************************\n");
+                int count = 0;
+                foreach (Customer c in customers)
+                {
+                    count++;
+                    Console.Write($"{count}. {c.FirstName} {c.LastName}\n");
+                }
+                if (count == 0)
+                {
+                    string text = "\nSorry this search yeilded no result, no customer with that First Name or Last Name found in the record\n";
+                    foreach (char c in text)
+                    {
+                        Console.Write(c);
+                        Thread.Sleep(40);
+                    }
+                   
+                    Console.Write("\n******************************************");
+                    return null;
+                }
+
+                Console.Write("******************************************");
+
+            }
+
+            return null;
+        }
         public async Task CreateACustomerAsync()
         {
-            Console.WriteLine("************************* Welcome to the customer create menu ******************************\n");
+            Console.WriteLine("************************* Welcome to the Customer Creation menu ******************************\n");
+
+            //Check if the current user is admin or not 
+
+           
+
+            //Console.Write("\nEnter your username: ");
+            //var username = Console.ReadLine();
+            //Console.Write("Enter your password: ");
+            //var password = Console.ReadLine();
+
             Console.WriteLine("Your first name will be used as the username.");
             Console.Write("\nEnter your first name: ");
             var firstName = Console.ReadLine();
@@ -100,21 +144,54 @@ namespace ConsoleShopper.UI
             var lastName = Console.ReadLine();
             Console.Write("Enter your preferred password: ");
             var password = Console.ReadLine();
+            while (true) 
+            {
+                Console.Write("Enter your password again for confirmation: ");
+                var password2 = Console.ReadLine();
+                if (password != password2) 
+                {
+                    Console.WriteLine("Sorry your password didn't match");
+                    continue; 
+                }
+                else { break; }
+            }
+         
 
-
+            Console.Write("Are you one our staff members? Type yes and press enter if you are, otherwise press any other key to continue : ");
+            string staffCheck = "";
+            staffCheck = Console.ReadLine();
+            if (staffCheck.Trim().ToLower() == "yes")
+            {
+                if (!await IdendityValidator.IsAdmin())
+                {
+                    string text = "\nUsername and or password failed...\nPlease enter your username and password carefully next time.\nExiting to main menu now....\nAny unauthorized attempts to subvert the system will be logged and reported to the relevant authority.\n";
+                    foreach (char c in text)
+                    {
+                        Console.Write(c);
+                        Thread.Sleep(40);
+                    }
+                    return;
+                }
+                else
+                { isAdmin = true; }
+            }
+            
             if (!string.IsNullOrEmpty(firstName) &&
                 !string.IsNullOrEmpty(lastName) && !string.IsNullOrEmpty(password))
             {
-                Console.WriteLine($"Welcome {firstName} {lastName}");
+               
                 // Create a customer from user inserted strings
-                var customer = new Customer { FirstName = firstName, LastName = lastName, Password = password };
+                
+                var customer = new Customer { FirstName = firstName, LastName = lastName, Password = password, UserTypeId = isAdmin ? 1: 2 };
 
                 // conjure up an interface to service layer 
                 var insertCustomer = Container.GetService<ICustomerService>();
 
                 // pass the customer up the chain through DI injected dbcontext to the service layer
                 await insertCustomer.InsertCustomerAsync(customer);
-                Console.WriteLine("Customer Created");
+                Console.WriteLine("Customer Creation successful");
+                Console.WriteLine($"Welcome to the Console Shopper family {firstName} {lastName}");
+                if (isAdmin) { isAdmin = false; }
             }
 
         }
@@ -123,7 +200,20 @@ namespace ConsoleShopper.UI
         {
             // Customer updatedCustomer, string updatedFirstName, string updatedLastName
 
-            Console.WriteLine("************************* Welcome to the  customer update menu ******************************\n");
+            Console.WriteLine("************************* Welcome to the  Customer Update menu ******************************\n");
+
+            // Check if the current user is admin or not 
+            if (!await IdendityValidator.IsAdmin())
+            {
+                string text = "\nUsername and or password failed...\nPlease enter your username and password carefully next time.\nExiting to main menu now....\nAny unauthorized attempts to subvert the system will be logged and reported to the relevant authority.\n";
+                foreach (char c in text)
+                {
+                    Console.Write(c);
+                    Thread.Sleep(40);
+                }
+                return;
+            }
+
             Console.Write("\nEnter Id of the Customer you want update: ");
             var customerId = Console.ReadLine();
             Program p = new Program();
@@ -155,20 +245,20 @@ namespace ConsoleShopper.UI
 
         public async Task DeleteCustomerAsync()
         {
-            Console.WriteLine("************************* Welcome to the customer delete menu ******************************\n");
+            Console.WriteLine("************************* Welcome to the Customer delete menu ******************************\n");
 
             // Check if the current user is admin or not 
-            Program p = new Program();
-            Console.Write("\nEnter your username: ");
-            var username = Console.ReadLine();
-            Console.Write("Enter your password: ");
-            var password = Console.ReadLine();
-
-            if (!await IsAdmin(username, password))
+            if (!await IdendityValidator.IsAdmin())
             {
-                Console.WriteLine("Sorry you don't have the authority to do this.");
+                string text = "\nUsername and or password failed...\nPlease enter your username and password carefully next time.\nExiting to main menu now....\nAny unauthorized attempts to subvert the system will be logged and reported to the relevant authority.\n";
+                foreach (char c in text)
+                {
+                    Console.Write(c);
+                    Thread.Sleep(40);
+                }
                 return;
             }
+
             // Asks for the Customer's Id whom should be deleted. 
             Console.Write("Enter Id of the Customer you want delete: ");
 
@@ -178,7 +268,7 @@ namespace ConsoleShopper.UI
             flag = false;
             // Note : customerId of type string gets converted to int inside GetCustomerByIdAsync method 
             var customerToDelete = await GetCustomerByIdAsync(customerId);
-        
+
 
             var customerService = Container.GetService<ICustomerService>();
             if (customerToDelete != null)
@@ -210,4 +300,5 @@ namespace ConsoleShopper.UI
             return validity;
         }
     }
+
 }
