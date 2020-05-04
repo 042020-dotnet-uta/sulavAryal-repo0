@@ -16,6 +16,7 @@ namespace CodingChallangeWeek3
                 Console.WriteLine("Press 1 to go to \"Is the Even\" challange");
                 Console.WriteLine("Press 2 to go to \"Multiplication table\" challange");
                 Console.WriteLine("Press 3 to go to \"Alternating Elements \" challange\n");
+                Console.WriteLine("Write exit and press enter to exit");
                 Console.Write("Enter your choice: ");
                 var input = Console.ReadLine();
                 if (input == "1")
