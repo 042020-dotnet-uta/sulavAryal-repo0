@@ -12,7 +12,7 @@ namespace CodingChallangeWeek3
         public void CalculateIsEven()
         {
             Console.WriteLine("**********************This is where you can even your odds **********************");
-            Console.Write("Enter first number: ");
+            Console.Write("Enter a number: ");
             var stringInput = Console.ReadLine();
             // sanitizes user input
             if (!string.IsNullOrWhiteSpace(stringInput))
