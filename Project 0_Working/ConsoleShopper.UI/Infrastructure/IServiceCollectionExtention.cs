@@ -14,9 +14,9 @@ namespace ConsoleShopper.UI
         /// <returns></returns>
         public static IServiceCollection AddRepositoryLayerServices(this IServiceCollection services)
         {  
-            services.AddTransient<ICustomerRepository, CustomerRepository>();
-            services.AddTransient<IProductRepository, ProductRepository>();
-            services.AddTransient<IOrderService, OrderService>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderService, OrderService>();
             return services;
         }
     }

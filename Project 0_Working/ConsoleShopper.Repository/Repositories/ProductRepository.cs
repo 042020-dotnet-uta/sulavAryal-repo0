@@ -12,12 +12,17 @@ namespace ConsoleShopper.Repository
     public class ProductRepository : IProductRepository
     {
         private readonly ConsoleShopperDbContext _dbContext;
-
+        /// <summary>
+        /// Product Repository Constructor injects dbContext from DI container 
+        /// and initializes the private constructor we have. 
+        /// </summary>
+        /// <param name="dbContext"></param>
         public ProductRepository(ConsoleShopperDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
+        
         #region Product Inventory by Id
         /// <summary>
         /// Returns Inventory by Id.
@@ -45,6 +50,11 @@ namespace ConsoleShopper.Repository
         #endregion
 
         #region Products by Store
+        /// <summary>
+        /// Retrives Product By Store Id. 
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<InventoryItem>> GetProductsByStoreAsync(int storeId)
         {
             try
@@ -66,6 +76,11 @@ namespace ConsoleShopper.Repository
         #endregion
 
         #region Product by Code
+        /// <summary>
+        /// Retrieves Product by Product code.
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public async Task<InventoryItem> GetProductByCodeAsync(string code)
         {
             try
@@ -86,26 +101,11 @@ namespace ConsoleShopper.Repository
         }
         #endregion
 
-        //public async Task<InventoryItem> GetProductByCodeAsync(int id)
-        //{
-        //    try
-        //    {
-        //        var result = await _dbContext.Inventory
-        //       .Include(i => i.Product)
-        //       .Include(i => i.Store)
-        //       .AsNoTracking()
-        //       .FirstOrDefaultAsync(i => i.Id == id);
-        //        return result;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //        //_logger.LogInformation("Couldn't reterive data from database");
-        //        return null;
-        //    }
-        //}
-
         #region Get All product Inventory
+        /// <summary>
+        /// Retrives list of all Inventories. 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<InventoryItem>> GetAllInventoryAsync()
         {
             try
@@ -124,6 +124,11 @@ namespace ConsoleShopper.Repository
         #endregion
 
         #region Get Product Inventory by Search Term
+        /// <summary>
+        /// Retrieves Products by Name.
+        /// </summary>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<InventoryItem>> GetProductsBySearchStringAsync(string searchString)
         {
             try
@@ -148,6 +153,11 @@ namespace ConsoleShopper.Repository
         #endregion
 
         #region Create a Product and Populate Product Inventory
+        /// <summary>
+        /// Increases Products Quantity in Product table
+        /// </summary>
+        /// <param name="inventoryItemToCreate"></param>
+        /// <returns></returns>
         public async Task CreateProductAsync(InventoryItem inventoryItemToCreate)
         {
             try
@@ -171,6 +181,11 @@ namespace ConsoleShopper.Repository
         #endregion
 
         #region Update Product Inventory
+        /// <summary>
+        /// Updates Product. 
+        /// </summary>
+        /// <param name="inventoryItemToUpdate"></param>
+        /// <returns></returns>
         public async Task UpdateProductAsync(InventoryItem inventoryItemToUpdate)
         {
             try
@@ -186,6 +201,11 @@ namespace ConsoleShopper.Repository
         #endregion
 
         #region Delete Product Inventory
+        /// <summary>
+        /// Deletes Product.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task DeleteProductAsync(int id)
         {
             var productToDelete = await _dbContext.Inventory
@@ -206,6 +226,10 @@ namespace ConsoleShopper.Repository
         #endregion
 
         #region Get All Products
+        /// <summary>
+        /// Lists all the products. 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             try

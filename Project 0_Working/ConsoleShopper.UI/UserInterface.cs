@@ -40,8 +40,8 @@ namespace ConsoleShopper.UI
                 if (input != "1")
                 {
 
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    System.Console.WriteLine("Aborting Shopping now...!");
+                    //Console.ForegroundColor = ConsoleColor.Red;
+                    //System.Console.WriteLine("Aborting Shopping now...!");
                     //"ENTER".Pastel(Color.FromArgb(165, 229, 250));
 
                     //System.Console.WriteLine($"Press {"ENTER".Pastel(Color.FromArgb(165, 229, 250))} to exit");
@@ -200,7 +200,7 @@ namespace ConsoleShopper.UI
                                 System.Console.WriteLine(e.Message);
                             }
                         }
-                        else { break; }
+                        else { continue; }
 
                     }
                     else if (input == "4")
@@ -294,7 +294,7 @@ namespace ConsoleShopper.UI
                             }
                             
                         }
-                        else { break; }
+                        else { continue; }
 
                     }
                     else 

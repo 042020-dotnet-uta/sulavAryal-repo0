@@ -22,6 +22,11 @@ namespace ConsoleShopper.Repository
 
         }
 
+
+        /// <summary>
+        /// Gets All Customers form the data base and lists them.
+        /// </summary>
+        /// <returns></returns>
         #region Get Customer Data (DQL)
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
@@ -43,6 +48,11 @@ namespace ConsoleShopper.Repository
 
         }
 
+        /// <summary>
+        /// Get Customer By Search String 
+        /// </summary>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Customer>> GetCustomerBySearchStringAsync(string searchString)
         {
             try
@@ -74,6 +84,7 @@ namespace ConsoleShopper.Repository
             {
                 _dbContext.Customers.Add(customerToInsert);
                 await _dbContext.SaveChangesAsync();
+                //await _dbContext.DisposeAsync();
             }
             catch (Exception e)
             {
@@ -115,11 +126,16 @@ namespace ConsoleShopper.Repository
 
         #endregion
 
-
+        /// <summary>
+        /// Checks if the user is Admin.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public async Task<(bool, int)> IsAdmin(string email, string password)
         {
             var customer = await _dbContext.Customers.Where(x => x.Email == email &&
-            x.Password == password && x.UserTypeId == 1).FirstOrDefaultAsync();
+            x.Password == password && x.UserTypeId == 1).AsNoTracking().FirstOrDefaultAsync();
 
             var isAdmin = false;
             var validatedCustomerId = 0;
@@ -133,10 +149,16 @@ namespace ConsoleShopper.Repository
             return (isAdmin, validatedCustomerId);
         }
 
+        /// <summary>
+        /// Checks if user is Customer type. 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public async Task<(bool, int)> IsCustomer(string email, string password)
         {
             var customer = await _dbContext.Customers.Where(x => x.Email == email &&
-            x.Password == password && x.UserTypeId == 2).FirstOrDefaultAsync();
+            x.Password == password && x.UserTypeId == 2).AsNoTracking().FirstOrDefaultAsync();
 
             var isCustomer = false;
             var validatedCustomerId = 0;

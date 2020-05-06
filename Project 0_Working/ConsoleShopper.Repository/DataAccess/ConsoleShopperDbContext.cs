@@ -45,6 +45,11 @@ namespace ConsoleShopper.Repository.DataAccess
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer("Data Source=.");
+                //optionsBuilder.EnableSensitiveDataLogging();
+            }
+            else 
+            {
+                optionsBuilder.EnableSensitiveDataLogging();
             }
         }
         #endregion

@@ -11,11 +11,20 @@ namespace ConsoleShopper.Repository
     public class OrderService : IOrderService
     {
         private readonly ConsoleShopperDbContext _dbContext;
+        /// <summary>
+        /// Constructor for OrderService injects dbContxt from DiContainer and initializes it. 
+        /// </summary>
+        /// <param name="dbContext"></param>
         public OrderService(ConsoleShopperDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Creates order from customer
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
         public async Task CreateOrder(Order order)
         {
             try
@@ -50,8 +59,6 @@ namespace ConsoleShopper.Repository
 
                 }
 
-               
-
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception e)
@@ -61,6 +68,11 @@ namespace ConsoleShopper.Repository
 
         }
 
+
+        /// <summary>
+        /// Retreives all the orders. 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
 
@@ -75,6 +87,11 @@ namespace ConsoleShopper.Repository
 
         }
 
+        /// <summary>
+        /// Retreives Order by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<Order> GetOrderById(int id)
         {
             try
@@ -95,6 +112,11 @@ namespace ConsoleShopper.Repository
          
         }
 
+        /// <summary>
+        /// Retrives Order by Id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Order>> GetOrderByStoreId(int id)
         {
             try
@@ -116,6 +138,11 @@ namespace ConsoleShopper.Repository
            
         }
 
+        /// <summary>
+        /// Reteives orders by store names
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Order>> GetOrderByStoreName(string name)
         {
             try
@@ -136,6 +163,11 @@ namespace ConsoleShopper.Repository
 
         }
 
+        /// <summary>
+        /// Retreives order by Customer Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Order>> GetOrdersByCustomerId(int id)
         {
             try
@@ -156,6 +188,11 @@ namespace ConsoleShopper.Repository
             }
         }
 
+        /// <summary>
+        /// Retrives Orders by Customer Name
+        /// </summary>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Order>> GetOrdersByCustomerName(string searchString)
         {
             try
