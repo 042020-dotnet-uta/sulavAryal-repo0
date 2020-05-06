@@ -1,11 +1,9 @@
-﻿using ConsoleShopper.Service;
+﻿using ConsoleShopper.Repository.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using ConsoleShopper.Repository.DataAccess;
-using System.IO;
 
 
 
@@ -13,16 +11,10 @@ namespace ConsoleShopper.UI
 {
     public static class ContainerBuilder
     {
-
-        //private static IConfiguration SetupConfiguration()
-        //{
-        //    return new ConfigurationBuilder()
-        //        .SetBasePath(Directory.GetCurrentDirectory())
-        //        .AddJsonFile("appsettings.json", optional: false)
-        //        .AddEnvironmentVariables()
-        //        //.AddCommandLine(args)
-        //        .Build();
-        //}
+        /// <summary>
+        /// Fills in and Builds Dependency Injection container. 
+        /// </summary>
+        /// <returns></returns>
         public static IServiceProvider Build()
         {
             // Create a list of dependencies
@@ -42,44 +34,33 @@ namespace ConsoleShopper.UI
             // from this point onwards dependencies can be added to the DI container via service collection. 
             // service collection is the bucket/container that holds all the dependencies we inject here. 
 
-            // Here we are injecting Logging service into it. 
-            //  services.AddDbContext<ConsoleShopperDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")))
+        
 
             // Adding DbContext into DI Container.
             services.AddDbContext<ConsoleShopperDbContext>(options => options
                 // Use DefaultConnection for passworded sa connection 
                 // Use AlternativeConnection for windows authenticated connection
-                .UseSqlServer(configuration.GetConnectionString("AlternateConnection")));
+                .UseSqlServer(configuration.GetConnectionString("AlternateConnection"),
+                        options => options.MigrationsAssembly("ConsoleShopper.Repository")));
 
             // Adding Repository Layer dependencies into DI Container
             services.AddRepositoryLayerServices();
 
-            // Adding Service Layer dependencies into DI Container
-            services.AddServiceLayerServices();
-
             // Adding Configuration into DI Container
             services.AddSingleton<IConfiguration>(configuration);
+            
+            // Here we are injecting Logging service into it. 
 
-            // Adding Logging into DI Container
-            //services.AddLogging((configure) =>
-            // {
-            //     configure.ClearProviders();
-            //     configure.AddConsole();
-            //     //configure.AddConfiguration(configuration.GetSection("Logging"));
-            //     configure.SetMinimumLevel(LogLevel.Trace);
-            // });
-
-            //services.AddLogging();
-            //AddConfiguration(configuration.GetSection("Logging"))
-
-            services.AddLogging((configure) =>
+            services.AddLogging((configure) => 
             {
                 configure.ClearProviders();
-                configure.AddConfiguration(configuration.GetSection("Logging")).AddConsole();
+                configure.AddConfiguration(configuration.GetSection("Logging"));
+                configure.AddConsole(c =>
+                {
+                    c.TimestampFormat = "[HH:mm:ss] ";
+                });
                 configure.SetMinimumLevel(LogLevel.Trace);
             });
-
-
             return services.BuildServiceProvider();
         }
 

@@ -1,5 +1,6 @@
 ﻿using ConsoleShopper.Domain;
 using ConsoleShopper.Repository;
+using ConsoleShopper.Repository.DataAccess;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,8 @@ namespace ConsoleShopper.Service
 
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
-            throw new NotImplementedException();
+            var customers =  await _customerRepository.GetAllCustomersAsync();
+            return customers;
         }
 
         public async Task<Customer> GetCustomerIdAsync(int id)
@@ -49,9 +51,9 @@ namespace ConsoleShopper.Service
             await _customerRepository.InsertCustomerAsync(customerToInsert);
         }
 
-        public async Task<bool> IsCustomer(string username, string password)
+        public async Task<bool> IsAdmin(string username, string password)
         {
-            return await _customerRepository.IsCustomer(username, password);   
+            return await _customerRepository.IsAdmin(username, password);   
         }
 
         public async Task UpdateCustomerAsync(Customer customerToUpdate)
@@ -62,6 +64,11 @@ namespace ConsoleShopper.Service
         public async Task DeleteCustomerAsync(Customer customerToDelete)
         {
             await _customerRepository.DeleteCustomerAsync(customerToDelete);
+        }
+
+        public async Task<IEnumerable<Customer>> GetAllCustomersBySearchStringAsync(string searchString)
+        {
+           return await _customerRepository.GetCustomerBySearchStringAsync(searchString);
         }
     }
 }
