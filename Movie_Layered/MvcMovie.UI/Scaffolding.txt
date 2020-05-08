@@ -22,7 +22,7 @@ Didn't work?
 Do you want to show changes in razor view pages once you change it without restarting the server again? 
 
 Do this 
-1. get this package from nuget Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation into your startup folder.
+1. get this package from nuget Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation into your startup project.
 2. Add this line  
      services.AddRazorPages().AddRazorRuntimeCompilation();
    to your startup.cs after  services.AddControllersWithViews(); 
