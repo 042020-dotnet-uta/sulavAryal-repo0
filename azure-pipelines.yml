@@ -1,13 +1,11 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - master
 
+# using ubuntu latest vmImage
 pool:
   vmImage: 'ubuntu-latest'
+
+pr: 'none'
 
 stages:
   - stage:
@@ -16,17 +14,11 @@ stages:
         steps:
           - task: SonarCloudPrepare@1
             inputs:
-              SonarCloud: 'Project0_SonarCloud'
-              organization: '042020-dotnet-uta'
+              SonarCloud: 'sulavAryalpipeLineDemo'
+              organization: 'sulavaryal'
               scannerMode: 'MSBuild'
-              projectKey: '042020-dotnet-uta'
+              projectKey: '042020-dotnet-uta_sulavAryal-repo0'
               projectName: 'sulavAryal-repo0'
           - script: dotnet build 'Project 0_Working\ConsoleShopper.UI\ConsoleShopper.UI.csproj'
           - script: echo 'Project built'
-          - script: dotnet test 'Project 0_Working\ConsoleShopper.Tests\ConsoleShopper.Tests.csproj'
-          - task: SonarCloudAnalyze@1
-      - job: 'publish'
-        dependsOn: 'build'
-        steps:
-          - script: dotnet publish 'Project 0_Working\'ConsoleShopper.sln'
-          
+          - script: dotnet test --no-build 'Project 0_Working\ConsoleShopper.Tests\ConsoleShopper.Tests.csproj'
