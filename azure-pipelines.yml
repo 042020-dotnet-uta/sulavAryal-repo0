@@ -20,7 +20,7 @@ stages:
               organization: '042020-dotnet-uta'
               scannerMode: 'MSBuild'
               projectKey: '042020-dotnet-uta'
-              projectName: 'sulavAryalPipeLineDemo'
+              projectName: 'sulavAryal-repo0'
           - script: dotnet build 'Project 0_Working\ConsoleShopper.UI\ConsoleShopper.UI.csproj'
           - script: echo 'Project built'
           - script: dotnet test 'Project 0_Working\ConsoleShopper.Tests\ConsoleShopper.Tests.csproj'
