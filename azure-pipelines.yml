@@ -45,8 +45,8 @@ stages:
               command: test
               arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx'
               projects: '**/*Tests.csproj'
-          - script: reportgenerator "-reports:Project 0_Working\ConsoleShopper.Test\coverage.opencover.xml" "-targetdir:Project 0_Working\ConsoleShopper.Test\Coverage\" "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
-            workingDirectory: 'Project 0_Working\ConsoleShopper.Test\'
+          - script: reportgenerator "-reports:Project 0_Working\ConsoleShopper.Tests\coverage.opencover.xml" "-targetdir:Project 0_Working\ConsoleShopper.Tests\Coverage\" "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
+            workingDirectory: 'Project 0_Working\ConsoleShopper.Tests\'
             displayName: Create Code Coverage Report
 
           - task: PublishCodeCoverageResults@1
