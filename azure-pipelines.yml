@@ -19,6 +19,35 @@ stages:
               scannerMode: 'MSBuild'
               projectKey: '042020-dotnet-uta_sulavAryal-repo0'
               projectName: 'sulavAryal-repo0'
+              extraProperties: |
+                sonar.exclusions=**/obj/**,**/*.dll
+                sonar.branch.name=$(Build.SourceBranchName)
+                sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/coverage.opencover.xml
+                sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
           - script: dotnet build 'Project 0_Working\ConsoleShopper.UI\ConsoleShopper.UI.csproj'
-          - script: echo 'Project built'
-          - script: dotnet test --no-build 'Project 0_Working\ConsoleShopper.Tests\ConsoleShopper.Tests.csproj'
+          - task: DotNetCoreCLI@2
+            displayName: Run Tests
+            inputs:
+              command: test
+              arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx'
+              projects: '**/*Tests.csproj'
+              nobuild: true
+          - script: |
+              dotnet tool install -g dotnet-reportgenerator-globaltool
+              reportgenerator "-reports:$(Build.SourcesDirectory)/**/coverage.opencover.xml" "-targetdir:$(Build.SourcesDirectory)/CodeCoverage" "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
+            displayName: Create Code Coverage Report
+          - task: PublishCodeCoverageResults@1
+            displayName: 'Publish Code Coverage'
+            inputs:
+              codeCoverageTool: Cobertura
+              summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
+              reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
+          
+          - task: SonarCloudAnalyze@1
+            displayName: 'Run Code Analysis'
+            continueOnError: false
+
+          - task: SonarCloudPublish@1
+            inputs:
+             pollingTimeoutSec: '300'
+         
