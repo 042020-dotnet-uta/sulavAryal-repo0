@@ -39,7 +39,7 @@ stages:
 
           - task: DotNetCoreCLI@2
           - script: echo "##vso[task.prependpath]$HOME/.dotnet/tools"
-          - script: reportgenerator "-reports:Project 0_Working/ConsoleShopper.Tests/ConsoleShopper.Tests/coverage.opencover.xml" "-targetdir:$Project 0_Working/ConsoleShopper.Tests/ConsoleShopper.Tests/CodeCoverage" "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
+          - script: reportgenerator "-reports:Project 0_Working/ConsoleShopper.Tests/ConsoleShopper.Tests/Coverage/coverage.opencover.xml" "-targetdir:$Project 0_Working/ConsoleShopper.Tests/ConsoleShopper.Tests/Coverage" "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
             displayName: Create Code Coverage Report
 
           - task: PublishCodeCoverageResults@1
